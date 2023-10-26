@@ -24,6 +24,7 @@
     "electron": "^27.0.2"
   },
   "dependencies": {
+    "sqlite3": "^5.1.6",
     "tailwindcss": "^3.3.5"
   }
 }
