@@ -1,0 +1,29 @@
+{
+  "name": "ezrecipe",
+  "version": "1.0.0",
+  "description": "finding recipes quick and not having to think about it",
+  "main": "src\\main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quentinsteinke/ezRecipe.git"
+  },
+  "keywords": [
+    "recipe"
+  ],
+  "author": "quentinsteinke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quentinsteinke/ezRecipe/issues"
+  },
+  "homepage": "https://github.com/quentinsteinke/ezRecipe#readme",
+  "devDependencies": {
+    "electron": "^27.0.2"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.3.5"
+  }
+}
