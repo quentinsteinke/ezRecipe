@@ -1,8 +1,9 @@
 document.getElementById('random-recipe').addEventListener('click', () => {
-    window.electron.ipcRenderer.send('get-random-recipe');
+    window.api.send('get-random-recipe');
 });
 
-window.electron.ipcRenderer.on('send-random-recipe', (event, recipe) => {
+window.api.receive('send-random-recipe', (recipe) => {
+    console.log("Received in index.js: ", recipe);
     // Map over the relatedData arrays to extract text fields
     const categories = recipe.categories ? recipe.categories.map(c => c.name).join(', ') : 'N/A';
     const ingredients = recipe.ingredients ? recipe.ingredients.map(i => i.name).join(', ') : 'N/A';
@@ -10,11 +11,23 @@ window.electron.ipcRenderer.on('send-random-recipe', (event, recipe) => {
     const nutrition = recipe.nutrition ? recipe.nutrition.map(n => `${n.name}: ${n.amount}`).join(', ') : 'N/A';
 
     const recipePrimaryImage = document.getElementById('recipe-primary-image');
-    if (recipe.image) {
-      const imagePath = '../../recipe_scraper/' + recipe.image;
+    console.log('Image: ' + recipePrimaryImage)
+    if (recipe.image != null) {
+      const imagePath = 'recipe_scraping\\' + recipe.image;
+      console.log('Checking for file: ' + imagePath);
       // Use the exposed fs API
-      if (window.electron.fs.existsSync(imagePath)) {
-        recipePrimaryImage.src = imagePath;
+      if (window.api.fileExists(imagePath)) {
+        console.log('Found file: ' + recipe.image);
+        // Get the current HTML path
+        const htmlPath = window.location.pathname;
+        const commonBasePath = htmlPath.substring(0, htmlPath.lastIndexOf('/', htmlPath.lastIndexOf('/') - 1));
+
+        // Now append your known relative path from the JS file to the images
+        const imagePath = `${commonBasePath}/recipe_scraping/${recipe.image}`;
+        const correctedImagePath = imagePath.replace(/\\/g, '/');
+        const newImagePath = commonBasePath.replace('\\src', '');
+        recipePrimaryImage.src = `file://${newImagePath}`;
+
       } else {
         console.log('Could not find file: ' + recipe.image);
       }
